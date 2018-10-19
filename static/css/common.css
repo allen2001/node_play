@@ -1,0 +1,39 @@
+.form_wrapper {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.verify {
+  color: #d7201c;
+}
+
+.color_price {
+  color: #337ab7;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.layer_mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999;
+  background: rgba(0, 0, 0, .3);
+}
+
+.add_prod_layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 330px;
+}
+
+.icon_close {
+  cursor: pointer;
+  float: right;
+  top: 3px;
+}
