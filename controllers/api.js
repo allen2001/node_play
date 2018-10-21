@@ -59,7 +59,11 @@ const modifyProd = async (ctx, next) => {
   let prodBrand = ctx.request.body.brand
   let prodPrice = ctx.request.body.price
   let prod = handleModifyProd(pId, prodName, prodBrand, prodPrice)
-  
+  if (prod == null) {
+    throw new APIError('error', '找不到此商品')
+  }
+  // rest res
+  ctx.rest(prod)
 }
 
 // exports

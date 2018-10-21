@@ -75,6 +75,17 @@ module.exports = {
   },
   // 修改商品
   handleModifyProd (id, name, brand, price) {
-    
+    // 查询商品是否存在
+    let { state, index } = searchProd(id)
+    if (state) {
+      // 更新商品数据
+      let target = prodList[index]
+      target.name = name
+      target.brand = brand
+      target.price = price
+      return target
+    } else {  // 商品不存在
+      return null
+    }
   }
 }

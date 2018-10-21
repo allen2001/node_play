@@ -144,6 +144,8 @@
           closeLayer: function() {
             this.showAddProd = false
             this.layerTitle = ''
+            this.prodId = null
+            this.showUpdate = false
             // 清空弹框中input中的值
             this.clearInputVal()
           },
@@ -164,12 +166,10 @@
               price: this.addProdPrice
             }).done(function(data) {
               console.log(data)
-              _this.showAddProd = false
               layer.close(load)
+              _this.closeLayer()
               // 重新加载列表数据
               _this.loadListData()
-              // 清空弹框中input中的值
-              _this.clearInputVal()
             }).fail(function(err) {
               console.error(err)
               layer.close(load)
@@ -193,10 +193,15 @@
               price: this.addProdPrice
             })
             .done(function(data) {
-              
+              layer.close(load)
+              _this.closeLayer()
+              layer.msg('商品: ' + data.name + ' 修改成功')
+              // 刷新列表数据
+              _this.loadListData()
             })
             .fail(function(err) {
-
+              layer.close(load)
+              layer.alert(err.message, { icon: 2 })
             })
           },
           // 验证表单字段
