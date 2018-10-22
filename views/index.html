@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/static/css/common.css">
 </head>
 <body>
-  <div id="app">
+  <div id="app" v-cloak>
     <div class="jumbotron text-center">
       <h1>商品列表</h1>
       <p>test...</p>
@@ -42,10 +42,12 @@
         </tr>
       </tbody>
     </table>
+    <!-- 无数据的提示 -->
+    <p v-show="!productList.length" class="list_tip">--暂无数据!--</p>
 
     <!-- layer -->
-    <div v-show="showAddProd" class="layer_mask">
-      <div class="add_prod_layer panel panel-default">
+    <div v-show="showAddProd" class="layer_mask" style="display: none;">
+      <div class="add_prod_layer panel panel-default" :class="{ show_animate: showAddProd }">
         <!-- header -->
         <div class="panel-heading"><span v-text="layerTitle"></span> <span class="icon_close glyphicon glyphicon-remove" aria-hidden="true" @click="closeLayer"></span></div>
         <div class="panel-body">
@@ -55,11 +57,11 @@
           </div>
           <div class="form-group">
             <label for="">品牌名称<span class="verify">*</span></label>
-            <input type="test" class="form-control" placeholder="请输入商品名称" v-model.trim='addProdBrand'>
+            <input type="test" class="form-control" placeholder="请输入品牌名称" v-model.trim='addProdBrand'>
           </div>
           <div class="form-group">
             <label for="">商品价格<span class="verify">*</span></label>
-            <input type="test" class="form-control" placeholder="请输入商品名称" v-model.trim='addProdPrice'>
+            <input type="test" class="form-control" placeholder="请输入商品价格" v-model.trim='addProdPrice'>
           </div>
           <!-- submit -->
           <button v-if="showUpdate" type="button" class="btn btn-primary" @click="updateSubmit">确认修改</button>
@@ -99,7 +101,7 @@
             .done(function(data) {
               console.log(data)
               layer.close(load)
-              vm.productList = data.prodList
+              _this.productList = data.prodList
             })
             .fail(function(err) {
               console.error(err)
@@ -173,7 +175,7 @@
             }).fail(function(err) {
               console.error(err)
               layer.close(load)
-              layer.alert(err.message, { icon: 2 })
+              layer.alert(err.message || '服务器错误', { icon: 2 })
             })
           },
           // 确认修改

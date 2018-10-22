@@ -1,89 +1,72 @@
 // 处理商品相关的业务逻辑
 
 // 导入model模型
-// ...
+const { Prod } = require('../model')
 
-// 获取商品实例
-var id = 0
-
-function initId() {
-  id++
-  return 'prod' + id
-}
-
-function Product(name, brand, price) {
-  this.id = initId()
+// 设置商品的业务信息
+function Product(name, brand, price, desc) {
   this.name = name
   this.brand = brand
   this.price = price
+  this.desc = desc
 }
 
-// 模拟数据库
-var prodList = [
-  new Product('默认商品1', '无', '0'),
-  new Product('默认商品2', '无', '0'),
-  new Product('默认商品3', '无', '0')
-]
+// 查询商品列表
+async function searchProdList() {
+  let prodList = await Prod.findAll()
+  return prodList
+}
 
-// 查询商品
-function searchProd(id) {
+// 查询商品 by ID
+async function searchProd(id) {
   let state = false
   let index = null
-  for (let i = 0; i < prodList.length; i++) {
-    if (id === prodList[i].id) {
-      state = true
-      index = i
-      break
+  let list = await Prod.findAll({
+    where: {
+      id
     }
+  })
+  let prod = list[0]
+  if (prod) {
+    return prod
+  } else {
+    return null
   }
-  return { state, index }
 }
 
 // exports
 module.exports = {
   // 查询商品列表
-  handleGetProdList () {
-    return prodList
-  },
+  handleGetProdList: searchProdList,
   // 查找指定的商品
-  handleGetProd (id) {
-    let { state, index } = searchProd(id)
-    if (state) {
-      return prodList[index]
-    } else {
-      return null
-    }
-  },
+  handleGetProd: searchProd,
   // 添加商品
-  handleAddProd (name, brand, price) {
-    brand = brand || '无'
-    price = price || '0'
-    let prod = new Product(name, brand, price)
-    prodList.push(prod)
+  async handleAddProd (name, brand, price, desc) {
+    let prodData = new Product(name, brand, price, desc)
+    let prod = await Prod.create(prodData)
     return prod
   },
   // 删除商品
-  handleRemoveProd (id) {
+  async handleRemoveProd (id) {
     // 查询是否有此商品
-    let { state, index } = searchProd(id)
-    if (state) {
+    let prod = await searchProd(id)
+    if (prod) {
       // 删除商品 并返回被删除的商品对象
-      return prodList.splice(index, 1)[0]
+      return await prod.destroy()
     } else {
       return null
     }
   },
   // 修改商品
-  handleModifyProd (id, name, brand, price) {
+  async handleModifyProd (id, name, brand, price) {
     // 查询商品是否存在
-    let { state, index } = searchProd(id)
-    if (state) {
+    let prod = await searchProd(id)
+    if (prod) {
       // 更新商品数据
-      let target = prodList[index]
-      target.name = name
-      target.brand = brand
-      target.price = price
-      return target
+      prod.name = name
+      prod.brand = brand
+      prod.price = price
+      return await prod.save()
     } else {  // 商品不存在
       return null
     }

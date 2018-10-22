@@ -6,7 +6,7 @@ const { handleGetProdList, handleAddProd, handleRemoveProd, handleGetProd, handl
 
 // 查找商品列表
 const getProdList = async (ctx, next) => {
-  let prodList = handleGetProdList()
+  let prodList = await handleGetProdList()
   // rest res
   ctx.rest({ prodList })
 }
@@ -17,7 +17,7 @@ const getProd = async (ctx, next) => {
   if (id === '') {
     throw new APIError('error', '商品id参数有误')
   }
-  let prod = handleGetProd(id)
+  let prod = await handleGetProd(id)
   if (prod == null) {
     throw new APIError('error', '找不到此商品')
   }
@@ -31,7 +31,8 @@ const addProd = async (ctx, next) => {
   let prodName = ctx.request.body.name
   let prodBrand = ctx.request.body.brand
   let prodPrice = ctx.request.body.price
-  let prod = handleAddProd(prodName, prodBrand, prodPrice)
+  let prodDesc = ctx.request.body.desc || 'default'
+  let prod = await handleAddProd(prodName, prodBrand, prodPrice, prodDesc)
   // rest res
   ctx.rest(prod)
 }
@@ -40,7 +41,7 @@ const addProd = async (ctx, next) => {
 const removeProd = async (ctx, next) => {
   console.log("待删除商品的id号: " + ctx.params.id)
   let pId = ctx.params.id
-  let prod = handleRemoveProd(pId)
+  let prod = await handleRemoveProd(pId)
   if (prod == null) {
     throw new APIError('error', '找不到此商品')
   }
@@ -58,7 +59,8 @@ const modifyProd = async (ctx, next) => {
   let prodName = ctx.request.body.name
   let prodBrand = ctx.request.body.brand
   let prodPrice = ctx.request.body.price
-  let prod = handleModifyProd(pId, prodName, prodBrand, prodPrice)
+  let prod = await handleModifyProd(pId, prodName, prodBrand, prodPrice)
+  // console.log(JSON.stringify(prod))
   if (prod == null) {
     throw new APIError('error', '找不到此商品')
   }

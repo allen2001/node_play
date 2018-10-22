@@ -32,8 +32,44 @@
   height: 330px;
 }
 
+.show_animate {
+  animation: show .3s;
+  -webkit-animation: show .3s;
+}
+
+@keyframes show {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@-webkit-keyframes show {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 .icon_close {
   cursor: pointer;
   float: right;
   top: 3px;
+}
+
+.list_tip {
+  height: 40px;
+  line-height: 40px;
+  color: #337ab7;
+  text-align: center;
+  font-size: 18px;
 }

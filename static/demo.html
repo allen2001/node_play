@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/common.css">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .add_prod_layer {
+      background: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="layer_mask" style="display: none">
+    <div class="add_prod_layer">12312312312321321</div>
+  </div>
+
+  <script>
+    document.querySelector('body').onclick = function() {
+      console.log('click');
+      document.querySelector('.layer_mask').style.display = 'block';
+      document.querySelector('.add_prod_layer').className = 'add_prod_layer show_animate';
+    }
+  </script>
+</body>
+</html>
