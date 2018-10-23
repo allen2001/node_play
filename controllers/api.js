@@ -6,9 +6,10 @@ const { handleGetProdList, handleAddProd, handleRemoveProd, handleGetProd, handl
 
 // 查找商品列表
 const getProdList = async (ctx, next) => {
-  let prodList = await handleGetProdList()
+  let page = ctx.query.page || 1
+  let prodObj = await handleGetProdList(page)
   // rest res
-  ctx.rest({ prodList })
+  ctx.rest(prodObj)
 }
 
 // 查找指定的商品

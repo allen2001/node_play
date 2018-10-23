@@ -17,5 +17,6 @@ for (let file of files) {
 MODELS.sync = () => {
   return db.sync()
 }
+MODELS.sequelize = db.sequelize // 暴露当前sequelize对象实例
 
 module.exports = MODELS

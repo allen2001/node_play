@@ -1,7 +1,7 @@
 // 处理商品相关的业务逻辑
 
 // 导入model模型
-const { Prod } = require('../model')
+const { Prod, sequelize } = require('../model')
 
 // 设置商品的业务信息
 function Product(name, brand, price, desc) {
@@ -12,9 +12,23 @@ function Product(name, brand, price, desc) {
 }
 
 // 查询商品列表
-async function searchProdList() {
-  let prodList = await Prod.findAll()
-  return prodList
+async function searchProdList(page) {
+  // 获取数据总数
+  let totalList = await Prod.findAll()
+  let total = totalList.length
+  // 通过分页参数筛选数据
+  let offset = (page - 1) * 10
+  let prodList = await Prod.findAll({
+    limit: 10,
+    offset,
+    order: [
+      ['updatedAt', 'DESC']
+    ]
+  })
+  return {
+    prodList,
+    total
+  }
 }
 
 // 查询商品 by ID

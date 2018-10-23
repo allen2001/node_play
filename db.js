@@ -65,11 +65,14 @@ function defineModel(name, attributes) {
           obj.createdAt = now
           obj.updatedAt = now
           obj.version = 0
-        } else { // 更新
-          console.log('Update!!!')
-          obj.updatedAt = now
-          obj.version++
         }
+      },
+      // 更新
+      beforeUpdate (obj) {
+        console.log('Update!!!')
+        let now = Date.now()
+        obj.updatedAt = now
+        obj.version++
       }
     }
   })
@@ -78,6 +81,7 @@ function defineModel(name, attributes) {
 // exports
 module.exports = {
   defineModel,
+  sequelize,  // 暴露当前sequelize对象实例
   sync () {
     if (process.env.NODE_ENV !== 'production') {
       return sequelize.sync({ force: true })  // 自动创建数据库
