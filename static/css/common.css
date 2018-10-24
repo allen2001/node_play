@@ -84,3 +84,18 @@ html, body {
   bottom: 0;
   width: 100%;
 }
+
+body .jumbotron {
+  padding: 20px;
+}
+
+body .input-group-addon {
+  cursor: pointer;
+  background: #337ab7;
+  border-color: #337ab7;
+  color: #fff;
+}
+
+body .input-group-addon:hover {
+  background: #286090;
+}

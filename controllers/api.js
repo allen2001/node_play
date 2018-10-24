@@ -7,12 +7,21 @@ const { handleGetProdList, handleAddProd, handleRemoveProd, handleGetProd, handl
 // 查找商品列表
 const getProdList = async (ctx, next) => {
   let page = ctx.query.page || 1
-  let prodObj = await handleGetProdList(page)
+  let keyword = ctx.query.keyword || ''
+  let prodObj = await handleGetProdList(page, keyword)
   // rest res
   ctx.rest(prodObj)
 }
 
-// 查找指定的商品
+// 查找指定的商品(by 关键字)
+// const searchProds = async (ctx, next) => {
+//   let keyword = ctx.query.keyword || ''
+//   let prodObj = await handleGetProdList(1, keyword)
+//   // rest res
+//   ctx.rest(prodObj)
+// }
+
+// 查找指定的商品(by ID)
 const getProd = async (ctx, next) => {
   let id = ctx.query.id || ''
   if (id === '') {
