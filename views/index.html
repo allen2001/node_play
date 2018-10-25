@@ -31,16 +31,20 @@
     <table class="table">
       <thead>
         <tr>
-          <th>序号</th>
+          <th style="width: 100px;">序号</th>
+          <th style="width: 120px;">缩略图</th>
           <th>名称</th>
           <th>品牌</th>
           <th>价格</th>
-          <th>编辑</th>
+          <th style="width: 200px;">编辑</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in productList" :key="item.id">
           <td v-text="getItemIndex(index)"></td>
+          <td>
+            <img class="media-object" :src="item.avatar ? item.avatar : defaultAvatarImg" alt="..">
+          </td>
           <td v-text="item.name"></td>
           <td v-text="item.brand"></td>
           <td>￥ <span v-text="item.price" class="color_price"></span></td>
@@ -94,6 +98,18 @@
             <label for="">商品价格<span class="verify">*</span></label>
             <input type="test" class="form-control" placeholder="请输入商品价格" v-model.trim='addProdPrice'>
           </div>
+          <div class="form-group">
+            <label for="">商品描述</label>
+            <textarea class="form-control" placeholder="请输入商品描述" rows="3" v-model.trim='addProdDesc'></textarea>
+          </div>
+          <!-- 上传头像 -->
+          <div class="form-group">
+            <label for="" style="display: block">上传缩略图</label>
+            <div class="avatar_wrapper">
+              <img :src="uploadImg" alt="" class="avatar_img">
+              <input id="uploadInput" type="file" accept="image/*" @change="getFileVal">
+            </div>
+          </div>
           <!-- submit -->
           <button v-if="showUpdate" type="button" class="btn btn-primary" @click="updateSubmit">确认修改</button>
           <button v-else type="button" class="btn btn-primary" @click="addSubmit">确认新增</button>
@@ -120,6 +136,9 @@
           addProdName: '',  // 商品名称
           addProdBrand: '', // 品牌名称
           addProdPrice: '',  // 商品价格
+          addProdDesc: '',  // 商品描述
+          prodAvatarImg: '', // 用户已上传的头像图片地址
+          defaultAvatarImg: '/static/img/avatar.png', // 默认缩略图
           totalNum: null, // 数据总量
           pageIndex: 1, // 当前分页
           searchInput: '' // 搜索关键字
@@ -127,9 +146,16 @@
         computed: {
           // 分页总的页码数
           pageNumber: function() {
-            let pageLimit = 10
-            let num = Math.ceil(this.totalNum / pageLimit)
+            var pageLimit = 10
+            var num = Math.ceil(this.totalNum / pageLimit)
             return num
+          },
+          // 上传图片
+          uploadImg: function() {
+            if (this.prodAvatarImg) {
+              return this.prodAvatarImg
+            }
+            return '/static/img/upload_avatar.png'
           }
         },
         methods: {
@@ -193,7 +219,8 @@
               _this.addProdName = data.name
               _this.addProdBrand = data.brand
               _this.addProdPrice = data.price
-              
+              _this.addProdDesc = data.desc
+              _this.prodAvatarImg = data.avatar
             })
             .fail(function(err) {
               console.error(err)
@@ -213,7 +240,7 @@
           // 确认添加
           addSubmit: function() {
             // 提交前先验证
-            let state = this.verifyForm()
+            var state = this.verifyForm()
             if (!state) { // 验证未通过
               return
             }
@@ -224,7 +251,9 @@
             $.post('/api/addProd', {
               name: this.addProdName,
               brand: this.addProdBrand,
-              price: this.addProdPrice
+              price: this.addProdPrice,
+              desc: this.addProdDesc,
+              avatar: this.prodAvatarImg
             }).done(function(data) {
               console.log(data)
               layer.close(load)
@@ -240,7 +269,7 @@
           // 确认修改
           updateSubmit: function() {
             // 提交前先验证
-            let state = this.verifyForm()
+            var state = this.verifyForm()
             if (!state) { // 验证未通过
               return
             }
@@ -251,7 +280,9 @@
             $.post('/api/modifyProd/' + this.prodId, {
               name: this.addProdName,
               brand: this.addProdBrand,
-              price: this.addProdPrice
+              price: this.addProdPrice,
+              desc: this.addProdDesc,
+              avatar: this.prodAvatarImg
             })
             .done(function(data) {
               layer.close(load)
@@ -311,6 +342,36 @@
             this.addProdName = ''
             this.addProdBrand = ''
             this.addProdPrice = ''
+            this.addProdDesc = ''
+            this.prodAvatarImg = ''
+            document.querySelector('#uploadInput').value = ''
+          },
+          // 上传头像图片到静态资源
+          getFileVal: function(ev) {
+            console.log(ev.target.files[0])
+            var file = ev.target.files[0]
+            if (file) {
+              var _this = this
+              var formdata = new FormData()
+              formdata.append('filename', file)
+              $.ajax({
+                type: 'POST',
+                url: '/api/upload',
+                data: formdata,
+                contentType: false,
+                processData: false
+              })
+              .done(function(data) {
+                console.log(data)
+                _this.prodAvatarImg = data.path
+              })
+              .fail(function(err) {
+                console.log(err)
+                layer.alert('上传文件失败!', { icon: 2 })
+                _this.prodAvatarImg = ''
+                document.querySelector('#uploadInput').value = ''
+              })
+            }
           }
         },
         watch: {

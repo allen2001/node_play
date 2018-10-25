@@ -33,7 +33,11 @@ html, body {
   top: 50%;
   transform: translate(-50%, -50%);
   width: 800px;
-  height: 330px;
+  /* height: 330px; */
+}
+
+.add_prod_layer textarea {
+  resize: none;
 }
 
 .show_animate {
@@ -62,6 +66,34 @@ html, body {
   100% {
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+.avatar_wrapper {
+  /* width: 70px; */
+  display: inline-block;
+  max-width: 140px;
+  min-width: 70px;
+  height: 70px;
+  padding: 5px;
+  border: dotted 1px #e1e1e1;
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar_wrapper .avatar_img {
+  display: block;
+  /* width: 100%; */
+  height: 100%;
+}
+
+.avatar_wrapper input[type=file] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .icon_close {
@@ -98,4 +130,13 @@ body .input-group-addon {
 
 body .input-group-addon:hover {
   background: #286090;
+}
+
+.table > tbody > tr > td {
+  line-height: 30px;
+}
+
+.table .media-object {
+  max-width: 64px;
+  height: 32px;
 }

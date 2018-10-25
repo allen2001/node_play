@@ -13,14 +13,6 @@ const getProdList = async (ctx, next) => {
   ctx.rest(prodObj)
 }
 
-// 查找指定的商品(by 关键字)
-// const searchProds = async (ctx, next) => {
-//   let keyword = ctx.query.keyword || ''
-//   let prodObj = await handleGetProdList(1, keyword)
-//   // rest res
-//   ctx.rest(prodObj)
-// }
-
 // 查找指定的商品(by ID)
 const getProd = async (ctx, next) => {
   let id = ctx.query.id || ''
@@ -41,8 +33,9 @@ const addProd = async (ctx, next) => {
   let prodName = ctx.request.body.name
   let prodBrand = ctx.request.body.brand
   let prodPrice = ctx.request.body.price
-  let prodDesc = ctx.request.body.desc || 'default'
-  let prod = await handleAddProd(prodName, prodBrand, prodPrice, prodDesc)
+  let prodDesc = ctx.request.body.desc
+  let prodAvatar = ctx.request.body.avatar
+  let prod = await handleAddProd(prodName, prodBrand, prodPrice, prodDesc, prodAvatar)
   // rest res
   ctx.rest(prod)
 }
@@ -69,7 +62,9 @@ const modifyProd = async (ctx, next) => {
   let prodName = ctx.request.body.name
   let prodBrand = ctx.request.body.brand
   let prodPrice = ctx.request.body.price
-  let prod = await handleModifyProd(pId, prodName, prodBrand, prodPrice)
+  let prodDesc = ctx.request.body.desc
+  let prodAvatar = ctx.request.body.avatar
+  let prod = await handleModifyProd(pId, prodName, prodBrand, prodPrice, prodDesc, prodAvatar)
   // console.log(JSON.stringify(prod))
   if (prod == null) {
     throw new APIError('error', '找不到此商品')

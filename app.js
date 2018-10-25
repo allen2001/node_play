@@ -1,8 +1,9 @@
 // 项目入口文件
-
+const path = require('path')
 // import
 const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
+// const bodyParser = require('koa-bodyparser')
+const koaBody = require('koa-body')
 
 // 创建实例
 const app = new Koa()
@@ -37,7 +38,15 @@ app.use(templating('views', {
 }))
 
 // 解析请求体
-app.use(bodyParser())
+// app.use(bodyParser())
+app.use(koaBody({
+  multipart: true,  // 支持文件上传
+  formidable: {
+    uploadDir: path.join(__dirname, 'static/upload/'),  // 设置文件上传目录
+    maxFieldsSize: 2 * 1024 * 1024, // 限制文件上传大小(默认2mb)
+    
+  }
+}))
 
 // add controller
 app.use(controller())
