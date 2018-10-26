@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>详情</title>
+  <!-- css -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/common.css">
+  <link rel="stylesheet" href="/static/css/detail.css">
+</head>
+<body>
+  <div id="app">
+    <!-- header -->
+    <div class="prod_header">
+      <!-- cover img -->
+      <img src="{{ prodObj.avatar }}" alt="" class="cover_img">
+      <div class="content">
+          <div class="media">
+            <div class="media-left">
+              <img class="media-object" src="{{ prodObj.avatar }}" alt="...">
+            </div>
+            <div class="media-body">
+              <h3 class="media-heading">{{ prodObj.name }}</h3>
+            </div>
+          </div>
+      </div>
+    </div>
+    <!-- desc -->
+    <div class="prod_desc">
+      <div class="prod_item">
+        <div class="label_name">名称:</div>
+        <div class="desc">{{ prodObj.name }}</div>
+      </div>
+      <div class="prod_item">
+        <div class="label_name">开发商:</div>
+        <div class="desc">{{ prodObj.brand }}</div>
+      </div>
+      <div class="prod_item">
+          <div class="label_name">价格:</div>
+          <div class="desc">￥ {{ prodObj.price }}</div>
+        </div>
+      <div class="prod_item">
+        <div class="label_name">描述:</div>
+        <div class="desc">{{ prodObj.desc }}</div>
+      </div>
+    </div>
+    <!-- 评价 -->
+    <div class="prod_evaluate">
+      <div class="eva_title">评论</div>
+    </div>
+  </div>
+
+  <!-- js -->
+  <script src="/static/js/jquery-1.9.1.min.js"></script>
+  <script src="/static/layer/layer.js"></script>
+  <script src="/static/js/vue.js"></script>
+  <script>
+    
+  </script>
+</body>
+</html>

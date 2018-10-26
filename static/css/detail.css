@@ -1,0 +1,89 @@
+body {
+  background: #f6f6f6;
+}
+
+.prod_header {
+  position: relative;
+  overflow: hidden;
+}
+
+.prod_header .cover_img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  filter: blur(10px);
+  -webkit-filter: blur(10px);
+}
+
+.prod_header .content {
+  position: relative;
+  z-index: 11;
+  padding: 30px 15px;
+  background: rgba(119, 103, 137, 0.43);
+}
+
+.prod_header .content .media-object {
+  height: 64px;
+}
+
+.prod_header .content .media-body {
+  vertical-align: middle;
+}
+
+.prod_header .content .media-body .media-heading {
+  color: #fff;
+}
+
+.prod_desc {
+  background: #000;
+  padding: 30px 15px;
+  border-top: solid 1px rgba(119, 103, 137, 0.43);
+  box-shadow: 0 -2px 5px rgba(119, 103, 137, 0.43);
+  color: #fff;
+}
+
+.prod_item {
+  padding-left: 110px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+.prod_item:first-child {
+  margin-top: 0;
+}
+
+.prod_desc .label_name,
+.prod_desc .desc {
+  float: left;
+}
+
+.prod_desc .label_name {
+  width: 100px;
+  margin-left: -110px;
+  text-align: right;
+}
+
+.prod_desc .desc {
+  width: 100%;
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+/* 评价区域 */
+.prod_evaluate {
+  width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  top: -10px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .6);
+}
+
+.eva_title {
+  line-height: 30px;
+  padding-bottom: 15px;
+  font-size: 20px;
+  border-bottom: solid 1px #ccc;
+}

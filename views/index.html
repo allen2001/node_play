@@ -11,8 +11,19 @@
 </head>
 <body>
   <div id="app" v-cloak>
+    <!-- header -->
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Home</a>
+        <p class="navbar-text">欢迎! allen2001</p>
+        <ul class="nav navbar-nav navbar-right">
+          <li><button type="button" class="btn btn-default navbar-btn">登录</button></li>
+          <li><a href="#">注册账号</a></li>
+        </ul>
+      </div>
+    </nav>
     <div class="jumbotron">
-      <h2>商品列表</h2>
+      <h2>搜索</h2>
       <div class="row">
         <!-- search -->
         <div class="col-sm-8">
@@ -45,7 +56,9 @@
           <td>
             <img class="media-object" :src="item.avatar ? item.avatar : defaultAvatarImg" alt="..">
           </td>
-          <td v-text="item.name"></td>
+          <td>
+            <a :href="'/detail/' + item.id" v-text="item.name"></a>
+          </td>
           <td v-text="item.brand"></td>
           <td>￥ <span v-text="item.price" class="color_price"></span></td>
           <td>
@@ -363,7 +376,7 @@
               })
               .done(function(data) {
                 console.log(data)
-                _this.prodAvatarImg = data.path
+                _this.prodAvatarImg = data.path + '?t=' + Date.now()
               })
               .fail(function(err) {
                 console.log(err)

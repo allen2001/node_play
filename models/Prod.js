@@ -8,7 +8,7 @@ module.exports = db.defineModel('prods', {
   brand: Sequelize.STRING(50),
   price: Sequelize.STRING(50),
   desc: {
-    type: Sequelize.STRING(100),
+    type: Sequelize.TEXT('long'),
     allowNull: true
   },
   avatar: {
