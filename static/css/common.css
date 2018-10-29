@@ -6,9 +6,14 @@ a {
   cursor: pointer;
 }
 
+[v-cloak] {
+  display: none;
+}
+
 .form_wrapper {
-  width: 1200px;
+  width: 900px;
   margin: 0 auto;
+  padding-top: 50px;
 }
 
 .verify {
@@ -19,6 +24,11 @@ a {
   color: #337ab7;
   font-weight: bold;
   font-size: 18px;
+}
+
+.color_blue {
+  color: #337ab7;
+  font-weight: bold;
 }
 
 .layer_mask {

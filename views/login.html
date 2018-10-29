@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>登录</title>
+  <!-- css -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+  <div id="app">
+    <div class="form_wrapper">
+      <h3 class="text-center">登录账户</h3>
+      <div class="form-group">
+        <label>用户名:</label>
+        <input type="input" class="form-control" placeholder="请输入用户名" v-model.trim="username">
+      </div>
+      <div class="form-group">
+        <label>密码:</label>
+        <input type="password" class="form-control" placeholder="请输入密码" v-model.trim="password">
+      </div>
+      <div class="clearfix">
+        <button type="button" class="btn btn-primary btn-lg pull-left" @click="handleLogin">登录</button>
+        <a href="/register" class="btn btn-default btn-lg pull-right">注册</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- js -->
+  <script src="/static/js/jquery-1.9.1.min.js"></script>
+  <script src="/static/layer/layer.js"></script>
+  <script src="/static/js/vue.js"></script>
+  <script>
+    $(function() {
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          username: '',
+          password: ''
+        },
+        methods: {
+          // 验证表单
+          verifyForm: function() {
+            // 提交前先验证
+            if (!this.username) {
+              layer.msg('用户名不能为空', { icon: 2 })
+              return false
+            }
+            if (!this.password) {
+              layer.msg('密码不能为空', { icon: 2 })
+              return false
+            }
+            return true
+          },
+          // 确认登录
+          handleLogin: function() {
+            var state = this.verifyForm()
+            if (state) {
+              // ajax
+              var load = layer.load() // loading...
+              var _this = this
+              $.post('/api/login', {
+                username: this.username,
+                password: this.password
+              })
+              .done(function(data) {
+                layer.close(load)
+                console.log(data)
+                // 登录成功后 跳转到首页
+                if (data.msg) {
+                  layer.msg(data.msg, {
+                    icon: 1,
+                    time: 2000,
+                    shade: 0.1
+                  }, function() {
+                    window.location.href = '/'
+                  })
+                }
+              })
+              .fail(function(err) {
+                layer.close(load)
+                console.error(err)
+                layer.alert(err.message || JSON.parse(err.responseText).message, { icon: 2 })
+              })
+            }
+          }
+        },
+        mounted: function() {
+
+        }
+      })
+    })
+  </script>
+</body>
+</html>

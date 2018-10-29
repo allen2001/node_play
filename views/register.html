@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>注册</title>
+  <!-- css -->
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/common.css">
+</head>
+<body>
+  <div id="app">
+    <div class="form_wrapper">
+      <h3 class="text-center">注册账户</h3>
+      <div class="form-group">
+        <label><span class="verify">*</span>用户名:</label>
+        <input type="input" class="form-control" placeholder="请输入用户名" v-model.trim="username">
+      </div>
+      <div class="form-group">
+        <label><span class="verify">*</span>密码:</label>
+        <input type="password" class="form-control" placeholder="请输入密码" v-model.trim="password">
+      </div>
+      <div class="form-group">
+        <label><span class="verify">*</span>密码确认:</label>
+        <input type="password" class="form-control" placeholder="请输入密码" v-model.trim="passwordConfirm">
+      </div>
+      <div class="form-group">
+        <label>昵称:</label>
+        <input type="input" class="form-control" placeholder="请输入昵称" v-model.trim="nickname">
+      </div>
+      <div class="form-group">
+        <label>性别:</label>
+        <div>
+          <label class="radio-inline">
+            <input type="radio" name="sex" value="0" v-model="userSex"> 男
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="sex" value="1" v-model="userSex"> 女
+          </label>
+        </div>
+      </div>
+
+      <div class="clearfix" style="padding-top: 30px;">
+        <button type="button" class="btn btn-primary btn-lg pull-left" @click="handleLogin">注册</button>
+        <p class="pull-right">
+          <a href="/login">已有账号? </a>
+          <a href="/login" class="btn btn-default btn-lg">登录</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- js -->
+  <script src="/static/js/jquery-1.9.1.min.js"></script>
+  <script src="/static/layer/layer.js"></script>
+  <script src="/static/js/vue.js"></script>
+  <script>
+    $(function() {
+      var vm = new Vue({
+        el: '#app',
+        data: {
+          username: '',
+          password: '',
+          passwordConfirm: '',
+          nickname: '',
+          userSex: '0'
+        },
+        methods: {
+          // 验证表单
+          verifyForm: function() {
+            // 提交前先验证
+            if (!this.username) {
+              layer.msg('用户名不能为空', { icon: 2 })
+              return false
+            }
+            if (!this.password) {
+              layer.msg('密码不能为空', { icon: 2 })
+              return false
+            }
+            if (!this.passwordConfirm) {
+              layer.msg('确认密码不能为空', { icon: 2 })
+              return false
+            }
+            if (this.passwordConfirm !== this.password) {
+              layer.msg('两次输入的密码不一致', { icon: 2 })
+              return false
+            }
+
+            return true
+          },
+          // 确认登录
+          handleLogin: function() {
+            var state = this.verifyForm()
+            if (state) {
+              // ajax
+              var load = layer.load() // loading...
+              var _this = this
+              $.post('/api/register', {
+                username: this.username,
+                password: this.password,
+                nickname: this.nickname,
+                userSex: this.userSex
+              })
+              .done(function(data) {
+                layer.close(load)
+                console.log(data)
+                layer.confirm('注册成功, 是否跳转到登录页', { icon: 1, title: '提示' }, function(index) {
+                  window.location.href = '/login'
+                }, function() {
+                  // console.log('刷新')
+                  window.location.reload()
+                })
+              })
+              .fail(function(err) {
+                layer.close(load)
+                console.error(err)
+                layer.alert(err.message || JSON.parse(err.responseText).message, { icon: 2 })
+              })
+            }
+          }
+        },
+        mounted: function() {
+
+        }
+      })
+    })
+  </script>
+</body>
+</html>

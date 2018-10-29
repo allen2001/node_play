@@ -29,9 +29,11 @@ function templating(path, opts) {
   // 
   return async (ctx, next) => {
     // 给ctx绑定render函数
-    // console.log('给ctx绑定render函数')
+
     // 通过ctx.state设置公共model变量
-    ctx.state.common = "页面公共数据"
+    let userinfo = {}
+    userinfo.username = ctx.cookies.get('username')
+    ctx.state.userinfo = userinfo
     ctx.render = function(view, model) {
       // 设置Content-type
       ctx.type = 'text/html'

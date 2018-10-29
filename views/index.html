@@ -11,14 +11,18 @@
 </head>
 <body>
   <div id="app" v-cloak>
+    <p style="display: none" id="username">{{ userinfo.username }}</p>
     <!-- header -->
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Home</a>
-        <p class="navbar-text">欢迎! allen2001</p>
-        <ul class="nav navbar-nav navbar-right">
-          <li><button type="button" class="btn btn-default navbar-btn">登录</button></li>
-          <li><a href="#">注册账号</a></li>
+        <a class="navbar-brand" href="/">Home</a>
+        <div v-if="userinfo">
+          <p class="navbar-text">欢迎! <a class="color_blue">{{ userinfo.username }}</a></p>
+          <p class="navbar-text"><a href="#" class="navbar-link" @click="quitLogin">退出登录</a></p>
+        </div>
+        <ul v-else class="nav navbar-nav navbar-right">
+          <li><div><a href="/login" class="btn btn-default navbar-btn">登录</a></div></li>
+          <li><a href="/register">注册账号</a></li>
         </ul>
       </div>
     </nav>
@@ -154,7 +158,8 @@
           defaultAvatarImg: '/static/img/avatar.png', // 默认缩略图
           totalNum: null, // 数据总量
           pageIndex: 1, // 当前分页
-          searchInput: '' // 搜索关键字
+          searchInput: '', // 搜索关键字
+          userinfo: null  // 用户信息
         },
         computed: {
           // 分页总的页码数
@@ -385,6 +390,38 @@
                 document.querySelector('#uploadInput').value = ''
               })
             }
+          },
+          // 获取用户信息
+          getUserInfo: function() {
+            var userName = document.getElementById('username').textContent
+            if (userName) {
+              this.userinfo = { username: userName }
+            }
+          },
+          // 退出登录
+          quitLogin: function() {
+            var _this = this
+            // 确认
+            layer.confirm('确认要退出吗?', { icon: 0, title: '提示' }, function(index) {
+              // ajax
+              var load = layer.load()   // loading...
+              $.get('/api/logout')
+              .done(function(data) {
+                console.log(data)
+                layer.close(load)
+                layer.alert('已退出登录', { icon: 1 })
+                _this.userinfo = null
+                document.getElementById('username').textContent = ''
+              })
+              .fail(function(err) {
+                console.error(err)
+                layer.close(load)
+                layer.alert('退出失败', { icon: 2 })
+              })
+              // 关闭确认弹框
+              layer.close(index)
+            })
+            
           }
         },
         watch: {
@@ -395,6 +432,8 @@
         mounted: function() {
           // 加载列表数据
           this.loadListData()
+          // 获取用户信息
+          this.getUserInfo()
         }
       })
       
