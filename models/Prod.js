@@ -14,5 +14,9 @@ module.exports = db.defineModel('prods', {
   avatar: {
     type: Sequelize.STRING(100),
     allowNull: true
+  },
+  creater: {
+    type: Sequelize.STRING(50),
+    allowNull: true
   }
 })

@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === 'test') {  // 测试环境
   // 判断mysql自定义配置文件是否存在
   try {
     if (fs.statSync(overrideConfig).isFile()) {
-      console.log('存在')
+      console.log('存在mysql自定义配置文件')
       config = Object.assign(config, require(overrideConfig))
     }
   } catch (error) {

@@ -39,12 +39,12 @@ const handleUserLogin = async (username, passwd) => {
   }
   // 验证密码
   user = user[0]
-  console.log(user)
+  // console.log(user)
   if (user.passwd !== passwd) { // 密码不正确
     return { err: true, message: '密码错误' }
   }
   // 登录成功
-  return { username: user.name }
+  return { username: user.username }
 }
 
 // exports

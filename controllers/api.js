@@ -3,6 +3,7 @@
 const { APIError } = require('../rest')
 // 引入service
 const { handleGetProdList, handleAddProd, handleRemoveProd, handleGetProd, handleModifyProd } = require('../service/products')
+const { handleCommentProd, handleGetCommentList } = require('../service/comments')
 
 // 查找商品列表
 const getProdList = async (ctx, next) => {
@@ -35,7 +36,11 @@ const addProd = async (ctx, next) => {
   let prodPrice = ctx.request.body.price
   let prodDesc = ctx.request.body.desc
   let prodAvatar = ctx.request.body.avatar
-  let prod = await handleAddProd(prodName, prodBrand, prodPrice, prodDesc, prodAvatar)
+  let creater = ctx.cookies.get('username')
+  if (creater) {
+    creater = new Buffer(creater, 'base64').toString()
+  }
+  let prod = await handleAddProd(prodName, prodBrand, prodPrice, prodDesc, prodAvatar, creater)
   // rest res
   ctx.rest(prod)
 }
@@ -73,13 +78,42 @@ const modifyProd = async (ctx, next) => {
   ctx.rest(prod)
 }
 
+// 获取评论列表
+const getCommentList = async (ctx, next) => {
+  let pid = ctx.query.pid
+  let list = await handleGetCommentList(pid)
+  // rest res
+  ctx.rest(list)
+}
+
+// 发布评论(新)
+const commentProd = async (ctx, next) => {
+  let pid = ctx.request.body.pid
+  let title = ctx.request.body.title
+  let content = ctx.request.body.content
+  let username = ctx.cookies.get('username')
+  if (!username) {
+    throw new APIError('error', '请先登录!')
+  }
+  // 通过cookie获取的用户名 base64转到字符串
+  username = new Buffer(username, 'base64').toString()
+  let comment = await handleCommentProd(title, content, username, pid)
+  if (comment.err) {
+    throw new APIError('error', comment.message)
+  }
+  // rest res
+  ctx.rest(comment)
+}
+
 // exports
 module.exports = {
   'GET /api/products': getProdList,
   'GET /api/searchProd': getProd,
   'POST /api/addProd': addProd,
   'POST /api/removeProd/:id': removeProd,
-  'POST /api/modifyProd/:id': modifyProd
+  'POST /api/modifyProd/:id': modifyProd,
+  'POST /api/comment': commentProd,
+  'GET /api/getCommentList': getCommentList
 }
 
 // -------------------------------------------

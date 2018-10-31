@@ -25,8 +25,8 @@ const userLogin = async (ctx, next) => {
     throw new APIError('error', result.message)
   }
   let userinfo = result.username
-  // 设置cookie
-  ctx.cookies.set('username', userinfo)
+  // 设置cookie(字符串转成base64)
+  ctx.cookies.set('username', new Buffer(userinfo).toString('base64'))
   // rest res
   ctx.rest({
     msg: '登录成功!'

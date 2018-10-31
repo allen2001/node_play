@@ -31,6 +31,10 @@ a {
   font-weight: bold;
 }
 
+.color_blue.normal {
+  font-weight: normal;
+}
+
 .layer_mask {
   position: absolute;
   left: 0;

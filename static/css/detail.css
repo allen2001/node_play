@@ -86,4 +86,58 @@ body {
   padding-bottom: 15px;
   font-size: 20px;
   border-bottom: solid 1px #ccc;
+  margin-bottom: 10px;
+}
+
+.eva_edit_wrapper {
+  margin-bottom: 15px;
+}
+
+.eva_edit {
+  padding-top: 15px;
+}
+
+.eva_edit textarea {
+  resize: vertical;
+}
+
+.eva_list {
+  padding: 0;
+}
+
+.eva_item {
+  padding-bottom: 20px;
+  border-bottom: solid 1px #ccc;
+  margin-bottom: 10px;
+  list-style: none;
+}
+
+.eva_item .media {
+
+}
+
+.eva_item .media-left {
+  padding-right: 15px;
+}
+
+.eva_item .media-object {
+  width: 50px;
+  height: 50px;
+}
+
+.eva_item .media-heading {
+  color: #2e6da4;
+}
+
+.eva_item .p1 {
+  font-size: 12px;
+  color: #999;
+}
+
+.eva_item .p2 {
+  padding-bottom: 20px;
+  border-bottom: solid 1px #ccc;
+  margin-bottom: 15px;
+  word-break: break-all;
+  white-space: pre-wrap;
 }

@@ -11,5 +11,9 @@ module.exports = db.defineModel('users', {
   },
   passwd: Sequelize.STRING(50),
   name: Sequelize.STRING(50),
-  gender: Sequelize.BOOLEAN 
+  gender: Sequelize.BOOLEAN,
+  avatar: {
+    type: Sequelize.STRING(100),
+    allowNull: true
+  }
 })

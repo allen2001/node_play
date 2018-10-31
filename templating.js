@@ -31,9 +31,13 @@ function templating(path, opts) {
     // 给ctx绑定render函数
 
     // 通过ctx.state设置公共model变量
-    let userinfo = {}
-    userinfo.username = ctx.cookies.get('username')
-    ctx.state.userinfo = userinfo
+    let username = ctx.cookies.get('username')
+    if (username) {
+      username = new Buffer(username, 'base64').toString()
+    }
+    ctx.state.userinfo = {
+      username
+    }
     ctx.render = function(view, model) {
       // 设置Content-type
       ctx.type = 'text/html'

@@ -6,12 +6,13 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 // 设置商品的业务信息
-function Product(name, brand, price, desc, avatar) {
+function Product(name, brand, price, desc, avatar, creater) {
   this.name = name
   this.brand = brand
   this.price = price
   this.desc = desc || ''
   this.avatar = avatar || ''
+  this.creater = creater || '匿名用户'
 }
 
 // 查询商品列表
@@ -85,8 +86,8 @@ module.exports = {
   // 查找指定的商品
   handleGetProd: searchProd,
   // 添加商品
-  async handleAddProd (name, brand, price, desc, avatar) {
-    let prodData = new Product(name, brand, price, desc, avatar)
+  async handleAddProd (name, brand, price, desc, avatar, creater) {
+    let prodData = new Product(name, brand, price, desc, avatar, creater)
     let prod = await Prod.create(prodData)
     return prod
   },
