@@ -15,6 +15,7 @@ module.exports = db.defineModel('comments', {
     allowNull: true
   },
   replyArr: {
-    type: Sequelize.JSON  // JSON 列. 仅限于 PostgreSQL, SQLite and MySQL.
+    type: Sequelize.JSON,  // JSON字符串列. 仅限于 PostgreSQL, SQLite and MySQL.
+    defaultValue: []
   }
 })

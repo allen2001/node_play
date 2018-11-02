@@ -111,8 +111,8 @@
                 <p class="p1"><a href="#" v-text="item.username"></a> 发布于<span v-text="formatTime(item.createdAt)"></span></p>
                 <p class="p2" v-text="item.content"></p>
                 <!-- 二级回复 -->
-                <!-- <ul class="child_ul">
-                  <li class="eva_item">
+                <ul v-show="item.replyArr.length" class="child_ul">
+                  <li class="eva_item" v-for="(reply, i) in item.replyArr" :key="reply.id">
                     <div class="media">
                       <div class="media-left">
                         <a href="#">
@@ -120,13 +120,13 @@
                         </a>
                       </div>
                       <div class="media-body">
-                        <a href="#" class="reply_user" v-text="item.username"></a>
-                        <p class="p1">发布于<span v-text="formatTime(item.createdAt)"></span></p>
-                        <p class="p2" v-text="item.content"></p>
+                        <a href="#" class="reply_user" v-text="reply.username"></a>
+                        <p class="p1">回复于<span v-text="formatTime(reply.createdAt)"></span></p>
+                        <p class="p2" v-text="reply.content"></p>
                       </div>
                     </div>
                   </li>
-                </ul> -->
+                </ul>
                 <div class="reply">
                   <div v-if="showReply === index">
                     <!-- input -->
@@ -262,7 +262,23 @@
               layer.msg('回复内容不能为空!', { icon: 2 })
               return
             }
-            
+            var _this = this
+            // ajax
+            var load = layer.load()
+            $.post('/api/reply', {
+              cid: cid,
+              content: this.replyContent
+            })
+            .done(function(data) {
+              layer.close(load)
+              console.log(data)
+              layer.msg('回复成功!', { icon: 1 })
+            })
+            .fail(function(err) {
+              layer.close(load)
+              console.error(err)
+              layer.alert(err.message || JSON.parse(err.responseText).message, { icon: 2 })
+            })
           },
           // 获取评价列表信息
           getCommentList: function() {
