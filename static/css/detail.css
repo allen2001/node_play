@@ -2,6 +2,14 @@ body {
   background: #f6f6f6;
 }
 
+textarea {
+  resize: vertical;
+}
+
+ul {
+  padding: 0;
+}
+
 .prod_header {
   position: relative;
   overflow: hidden;
@@ -97,14 +105,6 @@ body {
   padding-top: 15px;
 }
 
-.eva_edit textarea {
-  resize: vertical;
-}
-
-.eva_list {
-  padding: 0;
-}
-
 .eva_item {
   padding-bottom: 20px;
   border-bottom: solid 1px #ccc;
@@ -140,4 +140,15 @@ body {
   margin-bottom: 15px;
   word-break: break-all;
   white-space: pre-wrap;
+}
+
+.child_ul .eva_item .p2 {
+  border: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.reply_user {
+  color: #3fbadf;
+  font-size: 12px;
 }

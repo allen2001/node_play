@@ -105,6 +105,19 @@ const commentProd = async (ctx, next) => {
   ctx.rest(comment)
 }
 
+// 回复评论
+const commentReply = async (ctx, next) => {
+  let cid = ctx.request.body.cid
+  let content = ctx.request.body.content
+  let username = ctx.cookies.get('username')
+  if (!username) {
+    throw new APIError('error', '请先登录!')
+  }
+  // 通过cookie获取的用户名 base64转到字符串
+  username = new Buffer(username, 'base64').toString()
+  
+}
+
 // exports
 module.exports = {
   'GET /api/products': getProdList,
@@ -113,6 +126,7 @@ module.exports = {
   'POST /api/removeProd/:id': removeProd,
   'POST /api/modifyProd/:id': modifyProd,
   'POST /api/comment': commentProd,
+  'POST /api/reply': commentReply,
   'GET /api/getCommentList': getCommentList
 }
 

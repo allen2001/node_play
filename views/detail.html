@@ -111,10 +111,43 @@
                 <p class="p1"><a href="#" v-text="item.username"></a> 发布于<span v-text="formatTime(item.createdAt)"></span></p>
                 <p class="p2" v-text="item.content"></p>
                 <!-- 二级回复 -->
-                <button type="button" class="btn btn-default btn-sm active">
-                  <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
-                  回复
-                </button>
+                <!-- <ul class="child_ul">
+                  <li class="eva_item">
+                    <div class="media">
+                      <div class="media-left">
+                        <a href="#">
+                          <img class="media-object" src="/static/img/avatar.png" alt="..">
+                        </a>
+                      </div>
+                      <div class="media-body">
+                        <a href="#" class="reply_user" v-text="item.username"></a>
+                        <p class="p1">发布于<span v-text="formatTime(item.createdAt)"></span></p>
+                        <p class="p2" v-text="item.content"></p>
+                      </div>
+                    </div>
+                  </li>
+                </ul> -->
+                <div class="reply">
+                  <div v-if="showReply === index">
+                    <!-- input -->
+                    <div class="form-group">
+                      <textarea class="form-control" rows="3" maxlength="100" placeholder="回复内容不得多于100字" v-model.trim='replyContent'></textarea>
+                    </div>
+                    <!-- btn -->
+                    <button type="button" class="btn btn-info btn-sm" style="margin-right: 10px;" @click="handleReply(item.id)">
+                      <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                      回复
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm" @click="cancelReply">
+                      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                      取消
+                    </button>  
+                  </div>
+                  <button v-else type="button" class="btn btn-default btn-sm active" @click="showReplyInput(index)">
+                    <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    回复
+                  </button>
+                </div>
               </div>
             </div>
           </li>
@@ -136,8 +169,10 @@
         data: {
           userinfo: null,
           showEdit: false,
+          showReply: -1,
           evaTitle: '', // 评论标题
           evaContent: '',  // 评论内容
+          replyContent: '',   // 回复内容
           commentList: []
         },
         methods: {
@@ -211,6 +246,24 @@
               layer.alert(err.message || JSON.parse(err.responseText).message, { icon: 2 })
             })
           },
+          // 显示回复编辑框
+          showReplyInput: function(index) {
+            this.showReply = index
+            this.replyContent = ''
+          },
+          // 取消回复编辑
+          cancelReply: function() {
+            this.showReply = -1
+            this.replyContent = ''
+          },
+          // 确认回复
+          handleReply: function(cid) {
+            if (this.replyContent === '') {
+              layer.msg('回复内容不能为空!', { icon: 2 })
+              return
+            }
+            
+          },
           // 获取评价列表信息
           getCommentList: function() {
             var _this = this
@@ -245,15 +298,6 @@
           this.getUserInfo()
           // 获取评价列表信息
           this.getCommentList()
-        },
-        filters: {
-          // calcTime: function(createdTime) {
-          //   var now = Date.now()
-          //   console.log(now, createdTime)
-          //   var time = (now - createdTime) / 1000 / 60
-          //   time = Math.round(time)
-          //   return time + '分钟'
-          // }
         }
       })
     })
