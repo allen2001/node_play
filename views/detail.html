@@ -273,6 +273,9 @@
               layer.close(load)
               console.log(data)
               layer.msg('回复成功!', { icon: 1 })
+              _this.cancelReply()
+              // 重新加载列表
+              _this.getCommentList()
             })
             .fail(function(err) {
               layer.close(load)

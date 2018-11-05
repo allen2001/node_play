@@ -3,7 +3,7 @@
 const { APIError } = require('../rest')
 // 引入service
 const { handleGetProdList, handleAddProd, handleRemoveProd, handleGetProd, handleModifyProd } = require('../service/products')
-const { handleCommentProd, handleGetCommentList } = require('../service/comments')
+const { handleCommentProd, handleGetCommentList, handleCommentReply } = require('../service/comments')
 
 // 查找商品列表
 const getProdList = async (ctx, next) => {
@@ -115,7 +115,12 @@ const commentReply = async (ctx, next) => {
   }
   // 通过cookie获取的用户名 base64转到字符串
   username = new Buffer(username, 'base64').toString()
-  
+  let reply = await handleCommentReply(content, username, cid)
+  if (reply.err) {
+    throw new APIError('error', reply.message)
+  }
+  // rest res
+  ctx.rest(reply)
 }
 
 // exports
