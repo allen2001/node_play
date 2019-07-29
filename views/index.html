@@ -196,8 +196,14 @@
             })
             .fail(function(err) {
               console.error(err)
+              let resultMsg = ''
+              if (typeof err.responseText == 'string') {
+                resultMsg = JSON.parse(err.responseText)
+              } else {
+                resultMsg = err.responseText
+              }
               layer.close(load)
-              layer.alert(err.message, { icon: 2 })
+              layer.alert(resultMsg.message, { icon: 2 })
             })
           },
           // 分页跳转
@@ -411,7 +417,6 @@
                 layer.close(load)
                 layer.alert('已退出登录', { icon: 1 })
                 _this.userinfo = null
-                document.getElementById('username').textContent = ''
               })
               .fail(function(err) {
                 console.error(err)

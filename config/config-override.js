@@ -2,7 +2,7 @@
 const config = {
   database: 'test',
   username: 'root',
-  password: '654321',
+  password: '123456',
   host: 'localhost'
 }
 

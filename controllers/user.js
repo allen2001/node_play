@@ -37,6 +37,8 @@ const userLogin = async (ctx, next) => {
 const userLogout = async (ctx, next) => {
   // 清除登录信息的cookie
   ctx.cookies.set('username', '', { maxAge: 0 })
+  // 修改ctx.state设置的公共model变量
+  ctx.state.userinfo.username = ''
   // rest res
   ctx.rest({ msg: '退出成功!' })
 }
